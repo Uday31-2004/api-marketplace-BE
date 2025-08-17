@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.marketplace.auth.LoginResponse;
 import com.marketplace.auth.RegisterRequest;
 import com.marketplace.exception.APIException;
 import com.marketplace.models.User;
@@ -54,7 +55,7 @@ public class AuthService {
         return token;
     }
 
-    public String login(String emailString, String password) {
+    public LoginResponse login(String emailString, String password) {
         User user = userRepo.findByEmail(emailString)
                 .orElseThrow(() -> new APIException("User not found", HttpStatus.NOT_FOUND));
 
@@ -65,7 +66,7 @@ public class AuthService {
             throw new APIException("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
         String token = jwtUtil.generateToken(user.getEmail());
-        return token;
+        return new LoginResponse(token, user);
     }
 
     public ResponseEntity<?> verifyEmail(String authHeader, Map<String, String> requestBody) {
