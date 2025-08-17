@@ -1,4 +1,4 @@
-package com.marketplace.auth;
+package com.marketplace.models;
 
 import lombok.*;
 
@@ -21,5 +21,4 @@ public class User {
 
     private String verificationToken;
     private LocalDateTime tokenExpiry;
-
 }
